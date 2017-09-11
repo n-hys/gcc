@@ -294,6 +294,9 @@ case ${host} in
     extra_parts="$extra_parts crtbeginS.o crtendS.o"
   else
     case ${host} in
+      aarch64*-*-solaris2* | alpha*-*-solaris2* | riscv64-*-solaris2*)
+        extra_parts="crtbegin.o crtend.o"
+        ;;
       i?86-*-solaris2.1[0-9]* | x86_64-*-solaris2.1[0-9]*)
         # Solaris 10+/x86 provides crt1.o, crti.o, crtn.o, and gcrt1.o as
         # part of the base system.
@@ -327,6 +330,9 @@ case ${host} in
 esac
 
 case ${host} in
+aarch64*-*-solaris2* | alpha*-*-solaris2* | riscv64-*-solaris2*)
+  enable_execute_stack=enable-execute-stack-empty.c;
+  ;;
 *-*-darwin* | *-*-dragonfly* | *-*-freebsd* | *-*-netbsd* | *-*-openbsd* | \
   *-*-solaris2*)
   enable_execute_stack=enable-execute-stack-mprotect.c
@@ -366,10 +372,20 @@ aarch64*-*-linux*)
 	tmake_file="${tmake_file} ${cpu_type}/t-aarch64"
 	tmake_file="${tmake_file} ${cpu_type}/t-softfp t-softfp t-crtfm"
 	;;
+aarch64*-*-solaris2*)
+	tmake_file="${tmake_file} ${cpu_type}/t-aarch64 aarch64/t-sol2"
+	tmake_file="${tmake_file} ${cpu_type}/t-softfp t-softfp t-crtfm"
+	extra_parts="$extra_parts crtfastmath.o crtbeginS.o crtendS.o"
+	md_unwind_header=aarch64/aarch64-unwind.h
+	;;
 alpha*-*-linux*)
 	tmake_file="${tmake_file} alpha/t-alpha alpha/t-ieee t-crtfm alpha/t-linux"
 	extra_parts="$extra_parts crtfastmath.o"
 	md_unwind_header=alpha/linux-unwind.h
+	;;
+alpha*-*-solaris2*)
+	tmake_file="${tmake_file} alpha/t-alpha alpha/t-ieee t-crtfm alpha/t-sol2"
+	extra_parts="$extra_parts crtfastmath.o crtbeginS.o crtendS.o"
 	;;
 alpha*-*-freebsd*)
 	tmake_file="${tmake_file} alpha/t-alpha alpha/t-ieee t-crtfm"
@@ -1177,6 +1193,11 @@ powerpcle-*-eabisim*)
 powerpcle-*-eabi*)
 	tmake_file="${tmake_file} rs6000/t-ppccomm rs6000/t-crtstuff t-crtstuff-pic t-fdpbit"
 	extra_parts="$extra_parts crtbegin.o crtend.o crtbeginS.o crtendS.o crtbeginT.o ecrti.o ecrtn.o ncrti.o ncrtn.o"
+	;;
+riscv64-*-solaris2*)
+	tmake_file="${tmake_file} riscv/t-softfp${host_address} t-softfp riscv/t-elf riscv/t-elf${host_address}"
+	tmake_file="${tmake_file} riscv/t-sol2"
+	extra_parts="$extra_parts crtfastmath.o crtbeginS.o crtendS.o"
 	;;
 riscv*-*-linux*)
 	tmake_file="${tmake_file} riscv/t-softfp${host_address} t-softfp riscv/t-elf riscv/t-elf${host_address}"
