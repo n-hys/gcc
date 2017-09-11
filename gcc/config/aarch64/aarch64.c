@@ -6619,7 +6619,7 @@ sizetochar (int size)
 			pattern (so the mode needs to be adjusted).
      'z':		Output address of a typical LDP or STP.  */
 
-static void
+void
 aarch64_print_operand (FILE *f, rtx x, int code)
 {
   rtx elt;
@@ -17462,6 +17462,17 @@ aarch64_run_selftests (void)
 
 #endif /* #if CHECKING_P */
 
+#ifdef SUBTARGET_ATTRIBUTE_TABLE
+/* Table of valid machine attributes.  */
+static const struct attribute_spec aarch64_attribute_table[] =
+{
+  /* { name, min_len, max_len, decl_req, type_req, fn_type_req,
+       affects_type_identity, handler, exclude } */
+  SUBTARGET_ATTRIBUTE_TABLE,
+  { NULL, 0, 0, false, false, false, false, NULL, NULL }
+};
+#endif
+
 #undef TARGET_ADDRESS_COST
 #define TARGET_ADDRESS_COST aarch64_address_cost
 
@@ -17798,6 +17809,16 @@ aarch64_libgcc_floating_mode_supported_p
 #undef TARGET_VECTORIZE_EMPTY_MASK_IS_EXPENSIVE
 #define TARGET_VECTORIZE_EMPTY_MASK_IS_EXPENSIVE \
   aarch64_empty_mask_is_expensive
+
+#ifdef SUBTARGET_INSERT_ATTRIBUTES
+#undef TARGET_INSERT_ATTRIBUTES
+#define TARGET_INSERT_ATTRIBUTES SUBTARGET_INSERT_ATTRIBUTES
+#endif
+
+#ifdef SUBTARGET_ATTRIBUTE_TABLE
+#undef TARGET_ATTRIBUTE_TABLE
+#define TARGET_ATTRIBUTE_TABLE aarch64_attribute_table
+#endif
 
 #undef TARGET_INIT_LIBFUNCS
 #define TARGET_INIT_LIBFUNCS aarch64_init_libfuncs

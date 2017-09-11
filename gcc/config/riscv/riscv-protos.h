@@ -71,6 +71,8 @@ extern bool riscv_can_use_return_insn (void);
 extern rtx riscv_function_value (const_tree, const_tree, enum machine_mode);
 extern bool riscv_expand_block_move (rtx, rtx, rtx);
 
+extern void riscv_print_operand (FILE*, rtx, int);
+
 /* Routines implemented in riscv-c.c.  */
 void riscv_cpu_cpp_builtins (cpp_reader *);
 

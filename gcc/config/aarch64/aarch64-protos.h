@@ -538,6 +538,8 @@ bool aarch64_operands_adjust_ok_for_ldpstp (rtx *, bool, scalar_mode);
 extern void aarch64_asm_output_pool_epilogue (FILE *, const char *,
 					      tree, HOST_WIDE_INT);
 
+extern void aarch64_print_operand (FILE *f, rtx x, int code);
+
 /* Defined in common/config/aarch64-common.c.  */
 bool aarch64_handle_option (struct gcc_options *, struct gcc_options *,
 			     const struct cl_decoded_option *, location_t);
