@@ -90,6 +90,7 @@ extern const char *riscv_default_mtune (int argc, const char **argv);
 #define STRINGIZING(s) __STRINGIZING(s)
 #define __STRINGIZING(s) #s
 
+#undef MULTILIB_DEFAULTS
 #define MULTILIB_DEFAULTS \
   {"march=" STRINGIZING (TARGET_RISCV_DEFAULT_ARCH), \
    "mabi=" STRINGIZING (TARGET_RISCV_DEFAULT_ABI) }

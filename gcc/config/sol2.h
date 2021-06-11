@@ -124,6 +124,7 @@ along with GCC; see the file COPYING3.  If not see
     solaris_override_options ();			\
   } while (0)
 
+#undef MULTILIB_DEFAULTS
 #if DEFAULT_ARCH32_P
 #define MULTILIB_DEFAULTS { "m32" }
 #else
@@ -157,6 +158,20 @@ along with GCC; see the file COPYING3.  If not see
 %{m32:" ASM_CPU32_DEFAULT_SPEC "} \
 %{!m32:" ASM_CPU64_DEFAULT_SPEC "} \
 ")
+
+#if HAVE_GNU_AS
+#define ASM_DEBUG_SPEC "%{g*:%{%:debug-level-gt(0):" \
+    "%{gstabs*:--gstabs;"  ":%{" \
+    "%:dwarf-version-gt(3):--gdwarf-4;" \
+    "%:dwarf-version-gt(2):--gdwarf-3;" \
+    ":--gdwarf2}}}}"
+
+#define ASM_DEBUG_OPTION_SPEC "%{g*:%{%:debug-level-gt(0):" \
+    "%{gstabs*:--gstabs;"  ":%{" \
+    "%:dwarf-version-gt(3):--gdwarf-4;" \
+    "%:dwarf-version-gt(2):--gdwarf-3;" \
+    ":--gdwarf2}}}}"
+#endif
 
 #undef LIB_SPEC
 #define LIB_SPEC \
@@ -451,6 +466,7 @@ along with GCC; see the file COPYING3.  If not see
 
 /* collect2.cc can only parse GNU nm -n output.  Solaris nm needs -png to
    produce the same format.  */
+#undef NM_FLAGS
 #define NM_FLAGS "-png"
 
 #define STDC_0_IN_SYSTEM_HEADERS 1
